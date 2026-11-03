@@ -73,26 +73,26 @@
   <div class="fixed top-1/3 right-10 w-[30rem] h-[30rem] bg-sky-600/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
 
   <!-- Top Sticky Navigation -->
-  <header class="sticky top-0 z-40 backdrop-blur-md bg-finova-bg/85 border-b border-finova-border/70">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+  <header class="sticky top-0 z-40 backdrop-blur-md bg-finova-bg/90 border-b border-finova-border/70">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-2">
       
       <!-- Brand Logo -->
-      <a href="#" class="flex items-center gap-3 group">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-600 via-sky-500 to-amber-500 flex items-center justify-center p-0.5 shadow-lg shadow-cyan-950/50">
+      <a href="#" class="flex items-center gap-2.5 sm:gap-3 group shrink-0 min-w-0">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-cyan-600 via-sky-500 to-amber-500 flex items-center justify-center p-0.5 shadow-lg shadow-cyan-950/50 shrink-0">
           <div class="w-full h-full bg-finova-bg rounded-[10px] flex items-center justify-center group-hover:bg-transparent transition-all">
             <!-- Modern Minimalist Abstract Diamond Monogram -->
-            <svg class="w-5 h-5 text-cyan-400 group-hover:text-white transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-cyan-400 group-hover:text-white transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
               <polygon points="12 2 2 12 12 22 22 12"></polygon>
               <line x1="12" y1="8" x2="12" y2="16"></line>
               <line x1="8" y1="12" x2="16" y2="12"></line>
             </svg>
           </div>
         </div>
-        <div class="flex flex-col">
-          <span class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+        <div class="flex flex-col min-w-0">
+          <span class="text-base sm:text-xl font-bold tracking-tight text-white flex items-center gap-2 leading-tight">
             Finova One
           </span>
-          <span class="text-[11px] text-finova-slate tracking-wide">Enterprise Systems &amp; Solutions</span>
+          <span class="text-[9px] sm:text-[11px] text-finova-slate tracking-wide truncate">Enterprise Systems &amp; Solutions</span>
         </div>
       </a>
 
@@ -106,11 +106,13 @@
         <a href="#contact" class="hover:text-cyan-400 transition-colors">Contact</a>
       </nav>
 
-      <!-- Action Button -->
-      <div class="flex items-center gap-4">
-        <button onclick="openModal('discoveryModal')" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider bg-gradient-to-r from-sky-600 to-cyan-500 hover:from-sky-500 hover:to-cyan-400 text-white shadow-md shadow-cyan-900/30 transition-all hover:scale-[1.02]">
-          <i data-lucide="mail-check" class="w-4 h-4"></i>
-          <span>Schedule Discovery</span>
+      <!-- Action Button & Mobile Menu Toggle -->
+      <div class="flex items-center gap-2 sm:gap-4 shrink-0">
+        <!-- Compact button on mobile, full label on tablet/desktop -->
+        <button onclick="openModal('discoveryModal')" class="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs font-semibold uppercase tracking-wider bg-gradient-to-r from-sky-600 to-cyan-500 hover:from-sky-500 hover:to-cyan-400 text-white shadow-md shadow-cyan-900/30 transition-all hover:scale-[1.02]">
+          <i data-lucide="mail-check" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+          <span class="inline sm:hidden">Book</span>
+          <span class="hidden sm:inline">Schedule Discovery</span>
         </button>
         <button id="mobileMenuBtn" class="md:hidden p-2 text-slate-400 hover:text-white" aria-label="Toggle Menu">
           <i data-lucide="menu" class="w-6 h-6"></i>
@@ -119,21 +121,21 @@
 
     </div>
 
-    <!-- Mobile Dropdown -->
+    <!-- Mobile Dropdown with Auto-Close -->
     <div id="mobileMenu" class="hidden md:hidden px-4 pt-2 pb-6 bg-finova-card border-b border-finova-border text-sm">
       <div class="flex flex-col gap-3">
-        <a href="#practices" class="py-2 text-slate-300 hover:text-cyan-400">Practices</a>
-        <a href="#architectures" class="py-2 text-slate-300 hover:text-cyan-400">Architectures</a>
-        <a href="#industries" class="py-2 text-slate-300 hover:text-cyan-400">Verticals</a>
-        <a href="#models" class="py-2 text-slate-300 hover:text-cyan-400">Engagement Models</a>
-        <a href="#estimator" class="py-2 text-slate-300 hover:text-cyan-400">Milestone Estimator</a>
-        <a href="#contact" class="py-2 text-slate-300 hover:text-cyan-400">Contact</a>
+        <a href="#practices" class="mobile-nav-link py-2 text-slate-300 hover:text-cyan-400">Practices</a>
+        <a href="#architectures" class="mobile-nav-link py-2 text-slate-300 hover:text-cyan-400">Architectures</a>
+        <a href="#industries" class="mobile-nav-link py-2 text-slate-300 hover:text-cyan-400">Verticals</a>
+        <a href="#models" class="mobile-nav-link py-2 text-slate-300 hover:text-cyan-400">Engagement Models</a>
+        <a href="#estimator" class="mobile-nav-link py-2 text-slate-300 hover:text-cyan-400">Milestone Estimator</a>
+        <a href="#contact" class="mobile-nav-link py-2 text-slate-300 hover:text-cyan-400">Contact</a>
       </div>
     </div>
   </header>
 
   <!-- Hero Section -->
-  <section class="relative pt-16 pb-24 md:pt-28 md:pb-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
+  <section class="relative pt-12 pb-20 md:pt-28 md:pb-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
     
     <!-- Top Micro Tag -->
     <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-950/40 text-xs font-mono text-cyan-300 mb-8 backdrop-blur-sm">
@@ -142,7 +144,7 @@
     </div>
 
     <!-- Main Title -->
-    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.15] max-w-5xl mx-auto">
+    <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.15] max-w-5xl mx-auto">
       Enterprise Architecture, Integrations <br>
       <span class="bg-clip-text text-transparent bg-gradient-to-r from-sky-400 via-cyan-300 to-amber-300">
         &amp; Mission-Critical Solution Delivery
@@ -150,7 +152,7 @@
     </h1>
 
     <!-- Subtitle -->
-    <p class="mt-6 text-lg sm:text-xl text-finova-slate max-w-3xl mx-auto font-normal leading-relaxed">
+    <p class="mt-6 text-sm sm:text-xl text-finova-slate max-w-3xl mx-auto font-normal leading-relaxed">
       We engineer high-concurrency API integrations, deadlock-free asynchronous worker queues, and bespoke backend services—coupled with rigorous functional process design, system audits, and seamless enterprise cutovers.
     </p>
 
@@ -202,22 +204,22 @@
       
       <div class="text-center max-w-3xl mx-auto">
         <span class="text-xs font-mono tracking-widest uppercase text-cyan-400 font-semibold">Integrated Enterprise Practices</span>
-        <h2 class="text-3xl sm:text-4xl font-bold text-white tracking-tight mt-2">
+        <h2 class="text-2xl sm:text-4xl font-bold text-white tracking-tight mt-2">
           Technical Engineering &amp; Functional Solution Design
         </h2>
-        <p class="text-slate-400 mt-4 text-sm sm:text-base">
+        <p class="text-slate-400 mt-4 text-xs sm:text-base">
           Robust enterprise systems require low-level engineering precision coupled with deep functional process mastery. Finova One operates dedicated practice groups for both disciplines.
         </p>
 
         <!-- Interactive Switcher Buttons -->
-        <div class="mt-8 inline-flex p-1.5 rounded-2xl bg-finova-card border border-finova-border">
-          <button id="btnTabTech" class="tab-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-cyan-600 text-white shadow-md shadow-cyan-900/40">
+        <div class="mt-8 inline-flex flex-col sm:flex-row p-1.5 rounded-2xl bg-finova-card border border-finova-border gap-1 sm:gap-0">
+          <button id="btnTabTech" class="tab-btn px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-cyan-600 text-white shadow-md shadow-cyan-900/40">
             Technical Engineering Practice
           </button>
-          <button id="btnTabFunc" class="tab-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-slate-400 hover:text-white">
+          <button id="btnTabFunc" class="tab-btn px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-slate-400 hover:text-white">
             Functional Architecture Practice
           </button>
-          <button id="btnTabUnified" class="tab-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-slate-400 hover:text-white">
+          <button id="btnTabUnified" class="tab-btn px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-slate-400 hover:text-white">
             Turnkey Delivery Framework
           </button>
         </div>
@@ -394,10 +396,10 @@
 
       <!-- Tab Content 3: Unified Delivery Model (Hidden by default) -->
       <div id="contentUnified" class="tab-pane hidden mt-14">
-        <div class="p-8 rounded-2xl bg-finova-card border border-finova-border max-w-4xl mx-auto">
+        <div class="p-6 sm:p-8 rounded-2xl bg-finova-card border border-finova-border max-w-4xl mx-auto">
           <div class="text-center max-w-2xl mx-auto mb-8">
             <span class="text-xs font-mono text-cyan-400 uppercase tracking-widest font-semibold">Turnkey Delivery Framework</span>
-            <h3 class="text-2xl font-bold text-white mt-2">Unified Synergy Between Technical &amp; Functional Teams</h3>
+            <h3 class="text-xl sm:text-2xl font-bold text-white mt-2">Unified Synergy Between Technical &amp; Functional Teams</h3>
             <p class="text-xs sm:text-sm text-slate-400 mt-2">
               Most implementations encounter friction when developers don't understand balance sheets or functional consultants can't debug database concurrency. Finova One resolves this with unified execution.
             </p>
@@ -445,7 +447,7 @@
     <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
       <div>
         <span class="text-xs font-mono tracking-widest uppercase text-cyan-400 font-semibold">Production-Tested Systems</span>
-        <h2 class="text-3xl font-bold text-white tracking-tight mt-2">Enterprise Architectural Case Studies</h2>
+        <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight mt-2">Enterprise Architectural Case Studies</h2>
       </div>
       <p class="text-xs sm:text-sm text-finova-slate max-w-md mt-2 md:mt-0">
         Review technical breakdowns of mission-critical systems engineered to solve high-concurrency bottlenecks and complex business requirements.
@@ -528,7 +530,7 @@
 
   <!-- Interactive Architecture Modal (Async Queue Diagram) -->
   <div id="queueModal" class="app-modal fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-    <div class="bg-finova-card border border-finova-border rounded-2xl max-w-4xl w-full p-6 sm:p-8 relative shadow-2xl">
+    <div class="bg-finova-card border border-finova-border rounded-2xl max-w-4xl w-full p-6 sm:p-8 relative shadow-2xl max-h-[90vh] overflow-y-auto">
       
       <button onclick="closeModal('queueModal')" class="absolute top-5 right-5 text-slate-400 hover:text-white p-2">
         <i data-lucide="x" class="w-5 h-5"></i>
@@ -548,7 +550,7 @@
       </p>
 
       <!-- Interactive Flow Graphic -->
-      <div class="mt-6 p-6 rounded-xl bg-finova-bg border border-finova-border/80 font-mono text-xs">
+      <div class="mt-6 p-4 sm:p-6 rounded-xl bg-finova-bg border border-finova-border/80 font-mono text-xs">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
           
           <div class="p-3.5 rounded-lg bg-finova-card border border-finova-border flex flex-col justify-center">
@@ -590,7 +592,7 @@
 
   <!-- Real Contact & Discovery Lead Capture Modal -->
   <div id="discoveryModal" class="app-modal fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-    <div class="bg-finova-card border border-finova-border rounded-2xl max-w-lg w-full p-6 sm:p-8 relative shadow-2xl">
+    <div class="bg-finova-card border border-finova-border rounded-2xl max-w-lg w-full p-6 sm:p-8 relative shadow-2xl max-h-[90vh] overflow-y-auto">
       
       <button onclick="closeModal('discoveryModal')" class="absolute top-5 right-5 text-slate-400 hover:text-white p-2">
         <i data-lucide="x" class="w-5 h-5"></i>
@@ -669,7 +671,7 @@
       
       <div class="text-center max-w-2xl mx-auto mb-14">
         <span class="text-xs font-mono tracking-widest uppercase text-cyan-400 font-semibold">Field-Tested Competencies</span>
-        <h2 class="text-3xl font-bold text-white tracking-tight mt-2">Industry Domain Coverage</h2>
+        <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight mt-2">Industry Domain Coverage</h2>
         <p class="text-xs sm:text-sm text-slate-400 mt-2">
           Specialized business logic, workflows, and regulatory compliance delivered across multiple enterprise sectors.
         </p>
@@ -752,7 +754,7 @@
   <section id="models" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center max-w-2xl mx-auto mb-14">
       <span class="text-xs font-mono tracking-widest uppercase text-cyan-400 font-semibold">Structured Delivery Models</span>
-      <h2 class="text-3xl font-bold text-white tracking-tight mt-2">Flexible Collaboration Models</h2>
+      <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight mt-2">Flexible Collaboration Models</h2>
       <p class="text-xs sm:text-sm text-slate-400 mt-2">
         Engineered specifically for implementation partners requiring sprint bandwidth and enterprise end-clients seeking specialized systems architecture.
       </p>
@@ -826,7 +828,7 @@
       
       <div class="text-center mb-10">
         <span class="text-xs font-mono tracking-widest uppercase text-cyan-400 font-semibold">Instant Scoping Tool</span>
-        <h2 class="text-3xl font-bold text-white tracking-tight mt-2">Project Milestone &amp; Timeframe Estimator</h2>
+        <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight mt-2">Project Milestone &amp; Timeframe Estimator</h2>
         <p class="text-xs sm:text-sm text-slate-400 mt-2">
           Select your enterprise requirement below to generate an estimated scope and discuss implementation on a technical discovery call.
         </p>
@@ -921,7 +923,7 @@
             About Finova One
           </div>
 
-          <h2 class="text-3xl font-bold text-white tracking-tight">
+          <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">
             Specialized Enterprise Systems &amp; Integration Studio
           </h2>
 
@@ -1030,7 +1032,7 @@
         <span>Enterprise Systems &amp; Solutions</span>
       </div>
 
-      <div class="flex flex-wrap items-center gap-6 text-slate-400">
+      <div class="flex flex-wrap items-center justify-center gap-6 text-slate-400">
         <a href="#practices" class="hover:text-cyan-400 transition-colors">Practices</a>
         <a href="#architectures" class="hover:text-cyan-400 transition-colors">Architectures</a>
         <a href="#models" class="hover:text-cyan-400 transition-colors">Engagement</a>
@@ -1053,11 +1055,18 @@
     // Lucide Icons initialization
     lucide.createIcons();
 
-    // Mobile Menu Toggle
+    // Mobile Menu Toggle & Auto-Close on Link Click
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
     const mobileMenu = document.getElementById('mobileMenu');
+    
     mobileMenuBtn.addEventListener('click', () => {
       mobileMenu.classList.toggle('hidden');
+    });
+
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+      });
     });
 
     // Practice Switcher Tabs
@@ -1074,28 +1083,28 @@
 
     function resetTabs() {
       allTabs.forEach(btn => {
-        btn.className = 'tab-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-slate-400 hover:text-white';
+        btn.className = 'tab-btn px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-slate-400 hover:text-white';
       });
       allPanes.forEach(pane => pane.classList.add('hidden'));
     }
 
     btnTabTech.addEventListener('click', () => {
       resetTabs();
-      btnTabTech.className = 'tab-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-cyan-600 text-white shadow-md shadow-cyan-900/40';
+      btnTabTech.className = 'tab-btn px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-cyan-600 text-white shadow-md shadow-cyan-900/40';
       contentTech.classList.remove('hidden');
       lucide.createIcons();
     });
 
     btnTabFunc.addEventListener('click', () => {
       resetTabs();
-      btnTabFunc.className = 'tab-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-amber-600 text-white shadow-md shadow-amber-900/40';
+      btnTabFunc.className = 'tab-btn px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-amber-600 text-white shadow-md shadow-amber-900/40';
       contentFunc.classList.remove('hidden');
       lucide.createIcons();
     });
 
     btnTabUnified.addEventListener('click', () => {
       resetTabs();
-      btnTabUnified.className = 'tab-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-sky-700 text-white shadow-md shadow-sky-900/40';
+      btnTabUnified.className = 'tab-btn px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-sky-700 text-white shadow-md shadow-sky-900/40';
       contentUnified.classList.remove('hidden');
       lucide.createIcons();
     });
