@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finova One — Enterprise Systems Engineering &amp; Solutions</title>
+  <meta name="description" content="Independent enterprise software engineering & systems studio. High-concurrency APIs, deadlock-free queue architectures, custom integrations, and full-lifecycle ERP go-lives.">
+  
+  <!-- Inter & JetBrains Mono Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            finova: {
+              bg: '#070A11',
+              card: '#0D131F',
+              border: '#1A2338',
+              accent: '#0284C7',
+              cyan: '#06B6D4',
+              amber: '#F59E0B',
+              slate: '#94A3B8'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #070A11;
+      color: #F1F5F9;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+    
+    .glow-cyan {
+      box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.25);
+    }
+
+    .badge-chip {
+      background: rgba(14, 165, 233, 0.1);
+      border: 1px solid rgba(14, 165, 233, 0.25);
+      color: #38BDF8;
+    }
+
+    /* Modal Active State */
+    .app-modal.active {
+      display: flex !important;
+    }
+  </style>
+</head>
+<body class="selection:bg-cyan-500/20 selection:text-cyan-300">
+
+  <!-- Ambient Light Effects -->
+  <div class="fixed top-0 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
+  <div class="fixed top-1/3 right-10 w-[30rem] h-[30rem] bg-sky-600/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
+
+  <!-- Top Sticky Navigation -->
+  <header class="sticky top-0 z-40 backdrop-blur-md bg-finova-bg/85 border-b border-finova-border/70">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-600 via-sky-500 to-amber-500 flex items-center justify-center p-0.5 shadow-lg shadow-cyan-950/50">
+          <div class="w-full h-full bg-finova-bg rounded-[10px] flex items-center justify-center group-hover:bg-transparent transition-all">
+            <!-- Modern Minimalist Abstract Diamond Monogram -->
+            <svg class="w-5 h-5 text-cyan-400 group-hover:text-white transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 2 12 12 22 22 12"></polygon>
+              <line x1="12" y1="8" x2="12" y2="16"></line>
+              <line x1="8" y1="12" x2="16" y2="12"></line>
+            </svg>
+          </div>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+            Finova One
+          </span>
+          <span class="text-[11px] text-finova-slate tracking-wide">Enterprise Systems &amp; Solutions</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+        <a href="#practices" class="hover:text-cyan-400 transition-colors">Practices</a>
+        <a href="#architectures" class="hover:text-cyan-400 transition-colors">Architectures</a>
+        <a href="#industries" class="hover:text-cyan-400 transition-colors">Verticals</a>
+        <a href="#models" class="hover:text-cyan-400 transition-colors">Engagement</a>
+        <a href="#estimator" class="hover:text-cyan-400 transition-colors">Milestone Estimator</a>
+        <a href="#contact" class="hover:text-cyan-400 transition-colors">Contact</a>
+      </nav>
+
+      <!-- Action Button -->
+      <div class="flex items-center gap-4">
+        <button onclick="openModal('discoveryModal')" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider bg-gradient-to-r from-sky-600 to-cyan-500 hover:from-sky-500 hover:to-cyan-400 text-white shadow-md shadow-cyan-900/30 transition-all hover:scale-[1.02]">
+          <i data-lucide="mail-check" class="w-4 h-4"></i>
+          <span>Schedule Discovery</span>
+        </button>
+        <button id="mobileMenuBtn" class="md:hidden p-2 text-slate-400 hover:text-white" aria-label="Toggle Menu">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Dropdown -->
+    <div id="mobileMenu" class="hidden md:hidden px-4 pt-2 pb-6 bg-finova-card border-b border-finova-border text-sm">
+      <div class="flex flex-col gap-3">
+        <a href="#practices" class="py-2 text-slate-300 hover:text-cyan-400">Practices</a>
+        <a href="#architectures" class="py-2 text-slate-300 hover:text-cyan-400">Architectures</a>
+        <a href="#industries" class="py-2 text-slate-300 hover:text-cyan-400">Verticals</a>
+        <a href="#models" class="py-2 text-slate-300 hover:text-cyan-400">Engagement Models</a>
+        <a href="#estimator" class="py-2 text-slate-300 hover:text-cyan-400">Milestone Estimator</a>
+        <a href="#contact" class="py-2 text-slate-300 hover:text-cyan-400">Contact</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="relative pt-16 pb-24 md:pt-28 md:pb-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
+    
+    <!-- Top Micro Tag -->
+    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-950/40 text-xs font-mono text-cyan-300 mb-8 backdrop-blur-sm">
+      <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+      10+ Years Enterprise Systems Architecture • Cloud &amp; High-Volume In-Memory Databases
+    </div>
+
+    <!-- Main Title -->
+    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.15] max-w-5xl mx-auto">
+      Enterprise Architecture, Integrations <br>
+      <span class="bg-clip-text text-transparent bg-gradient-to-r from-sky-400 via-cyan-300 to-amber-300">
+        &amp; Mission-Critical Solution Delivery
+      </span>
+    </h1>
+
+    <!-- Subtitle -->
+    <p class="mt-6 text-lg sm:text-xl text-finova-slate max-w-3xl mx-auto font-normal leading-relaxed">
+      We engineer high-concurrency API integrations, deadlock-free asynchronous worker queues, and bespoke backend services—coupled with rigorous functional process design, system audits, and seamless enterprise cutovers.
+    </p>
+
+    <!-- Risk-Reversal Callout Banner -->
+    <div class="mt-8 max-w-2xl mx-auto p-3.5 rounded-xl bg-finova-card/90 border border-finova-border flex items-center justify-center gap-3 text-xs sm:text-sm text-slate-300">
+      <i data-lucide="shield-check" class="w-5 h-5 text-amber-400 flex-shrink-0"></i>
+      <span>
+        <strong class="text-amber-300">Guaranteed Execution Quality:</strong> Available for an isolated proof-of-concept milestone or complimentary technical review to evaluate architecture firsthand.
+      </span>
+    </div>
+
+    <!-- CTA Group -->
+    <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+      <button onclick="openModal('discoveryModal')" class="px-7 py-3.5 rounded-xl font-semibold text-sm bg-gradient-to-r from-sky-600 via-cyan-600 to-teal-500 hover:from-sky-500 hover:to-teal-400 text-white shadow-lg shadow-cyan-900/40 transition-all hover:scale-105 flex items-center gap-2">
+        <i data-lucide="zap" class="w-4 h-4 text-amber-300"></i>
+        <span>Schedule Discovery Call</span>
+      </button>
+      <a href="#architectures" class="px-7 py-3.5 rounded-xl font-semibold text-sm bg-finova-card hover:bg-slate-800 text-slate-200 border border-finova-border transition-all flex items-center gap-2">
+        <i data-lucide="layers" class="w-4 h-4 text-cyan-400"></i>
+        <span>Explore Case Studies</span>
+      </a>
+    </div>
+
+    <!-- Metric Counters -->
+    <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto pt-10 border-t border-finova-border/60">
+      <div class="p-4 rounded-xl bg-finova-card/50 border border-finova-border/40">
+        <div class="text-3xl font-extrabold text-white font-mono">10+</div>
+        <div class="text-xs text-finova-slate mt-1 uppercase tracking-wider font-medium">Years Enterprise Track Record</div>
+      </div>
+      <div class="p-4 rounded-xl bg-finova-card/50 border border-finova-border/40">
+        <div class="text-3xl font-extrabold text-cyan-400 font-mono">10+</div>
+        <div class="text-xs text-finova-slate mt-1 uppercase tracking-wider font-medium">Major Enterprise Go-Lives</div>
+      </div>
+      <div class="p-4 rounded-xl bg-finova-card/50 border border-finova-border/40">
+        <div class="text-3xl font-extrabold text-amber-400 font-mono">0%</div>
+        <div class="text-xs text-finova-slate mt-1 uppercase tracking-wider font-medium">Database Deadlock Failures</div>
+      </div>
+      <div class="p-4 rounded-xl bg-finova-card/50 border border-finova-border/40">
+        <div class="text-3xl font-extrabold text-sky-400 font-mono">100%</div>
+        <div class="text-xs text-finova-slate mt-1 uppercase tracking-wider font-medium">Async Global Coverage</div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Interactive Dual Practice Section -->
+  <section id="practices" class="py-20 bg-finova-bg border-t border-b border-finova-border/60 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto">
+        <span class="text-xs font-mono tracking-widest uppercase text-cyan-400 font-semibold">Integrated Enterprise Practices</span>
+        <h2 class="text-3xl sm:text-4xl font-bold text-white tracking-tight mt-2">
+          Technical Engineering &amp; Functional Solution Design
+        </h2>
+        <p class="text-slate-400 mt-4 text-sm sm:text-base">
+          Robust enterprise systems require low-level engineering precision coupled with deep functional process mastery. Finova One operates dedicated practice groups for both disciplines.
+        </p>
+
+        <!-- Interactive Switcher Buttons -->
+        <div class="mt-8 inline-flex p-1.5 rounded-2xl bg-finova-card border border-finova-border">
+          <button id="btnTabTech" class="tab-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-cyan-600 text-white shadow-md shadow-cyan-900/40">
+            Technical Engineering Practice
+          </button>
+          <button id="btnTabFunc" class="tab-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-slate-400 hover:text-white">
+            Functional Architecture Practice
+          </button>
+          <button id="btnTabUnified" class="tab-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-slate-400 hover:text-white">
+            Turnkey Delivery Framework
+          </button>
+        </div>
+      </div>
+
+      <!-- Tab Content 1: Technical Practice -->
+      <div id="contentTech" class="tab-pane mt-14 grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Practice Overview Card -->
+        <div class="p-6 rounded-2xl bg-finova-card border border-finova-border flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono uppercase text-cyan-400 px-2 py-1 rounded bg-cyan-950/60 border border-cyan-800/40">Division Overview</span>
+              <span class="text-xs text-slate-400">High-Performance Focus</span>
+            </div>
+            <h3 class="text-xl font-bold text-white mt-4">Technical &amp; Systems Engineering</h3>
+            <p class="text-xs text-sky-400 font-medium">Bespoke Add-ons, Integration Middleware &amp; Service Layer</p>
+            <p class="text-slate-400 text-xs sm:text-sm mt-4 leading-relaxed">
+              Specialized in low-latency .NET/C# services, Service Layer REST endpoints, asynchronous message queues, and in-memory database optimization to handle millions of transactions without bottlenecks.
+            </p>
+            
+            <div class="mt-6 pt-6 border-t border-finova-border/60">
+              <span class="text-xs font-semibold text-slate-300 block mb-3 uppercase tracking-wider">Technology Stack:</span>
+              <div class="flex flex-wrap gap-2 text-xs font-mono">
+                <span class="badge-chip px-2.5 py-1 rounded">C# .NET Core</span>
+                <span class="badge-chip px-2.5 py-1 rounded">SAP B1 SDK</span>
+                <span class="badge-chip px-2.5 py-1 rounded">Service Layer</span>
+                <span class="badge-chip px-2.5 py-1 rounded">SAP HANA</span>
+                <span class="badge-chip px-2.5 py-1 rounded">Message Queues</span>
+                <span class="badge-chip px-2.5 py-1 rounded">MS SQL</span>
+                <span class="badge-chip px-2.5 py-1 rounded">Python Automations</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-6 pt-4">
+            <button onclick="openModal('queueModal')" class="w-full py-2.5 px-4 rounded-xl bg-cyan-950/40 hover:bg-cyan-900/40 border border-cyan-700/40 text-cyan-300 text-xs font-semibold flex items-center justify-center gap-2 transition-all">
+              <i data-lucide="git-merge" class="w-4 h-4"></i>
+              <span>View Async Queue Architecture</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Technical Modules (Col 2 & 3) -->
+        <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+          
+          <div class="p-5 rounded-2xl bg-finova-card border border-finova-border hover:border-cyan-500/40 transition-all">
+            <div class="w-9 h-9 rounded-lg bg-cyan-950 flex items-center justify-center text-cyan-400 mb-3">
+              <i data-lucide="cpu" class="w-5 h-5"></i>
+            </div>
+            <h4 class="text-base font-bold text-white">Custom Add-on &amp; UI-API Engineering</h4>
+            <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+              Bespoke event filtering, thread-safe background workers, custom UDOs/UDTs, and transactional forms engineered in C# without UI latency or client crashes.
+            </p>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-finova-card border border-finova-border hover:border-cyan-500/40 transition-all">
+            <div class="w-9 h-9 rounded-lg bg-sky-950 flex items-center justify-center text-sky-400 mb-3">
+              <i data-lucide="zap" class="w-5 h-5"></i>
+            </div>
+            <h4 class="text-base font-bold text-white">High-Concurrency API Middleware</h4>
+            <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+              Resilient REST interfaces featuring session pooling, atomic rollbacks (`Company.StartTransaction`), and chunked multi-threaded data imports.
+            </p>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-finova-card border border-finova-border hover:border-cyan-500/40 transition-all">
+            <div class="w-9 h-9 rounded-lg bg-amber-950 flex items-center justify-center text-amber-400 mb-3">
+              <i data-lucide="database" class="w-5 h-5"></i>
+            </div>
+            <h4 class="text-base font-bold text-white">Database Performance &amp; Query Tuning</h4>
+            <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+              SAP HANA and SQL execution plan diagnosis, TransactionNotification refactoring, memory optimization, and zero-deadlock batch processing.
+            </p>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-finova-card border border-finova-border hover:border-cyan-500/40 transition-all">
+            <div class="w-9 h-9 rounded-lg bg-emerald-950 flex items-center justify-center text-emerald-400 mb-3">
+              <i data-lucide="globe" class="w-5 h-5"></i>
+            </div>
+            <h4 class="text-base font-bold text-white">Decoupled Web Reporting Applications</h4>
+            <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+              External .NET Core MVC web applications for heavy financial and operational extraction (Trial Balance, GSTR, General Ledger) offloading ERP workloads.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Tab Content 2: Functional Practice (Hidden by default) -->
+      <div id="contentFunc" class="tab-pane hidden mt-14 grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Practice Overview Card -->
+        <div class="p-6 rounded-2xl bg-finova-card border border-finova-border flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono uppercase text-amber-400 px-2 py-1 rounded bg-amber-950/60 border border-amber-800/40">Division Overview</span>
+              <span class="text-xs text-slate-400">Lifecycle Advisory</span>
+            </div>
+            <h3 class="text-xl font-bold text-white mt-4">Functional Advisory &amp; Architecture</h3>
+            <p class="text-xs text-amber-400 font-medium">Business Blueprinting, System Design &amp; Data Cutover</p>
+            <p class="text-slate-400 text-xs sm:text-sm mt-4 leading-relaxed">
+              Structured methodology covering As-Is vs. To-Be workflows, System Design Documents (SDD), DTW data staging, approval hierarchies, and post-go-live stabilization.
+            </p>
+            
+            <div class="mt-6 pt-6 border-t border-finova-border/60">
+              <span class="text-xs font-semibold text-slate-300 block mb-3 uppercase tracking-wider">Functional Modules:</span>
+              <div class="flex flex-wrap gap-2 text-xs font-mono">
+                <span class="badge-chip px-2.5 py-1 rounded border-amber-500/30 text-amber-300 bg-amber-950/30">O2C &amp; P2P</span>
+                <span class="badge-chip px-2.5 py-1 rounded border-amber-500/30 text-amber-300 bg-amber-950/30">DTW Cutover</span>
+                <span class="badge-chip px-2.5 py-1 rounded border-amber-500/30 text-amber-300 bg-amber-950/30">System Design (SDD)</span>
+                <span class="badge-chip px-2.5 py-1 rounded border-amber-500/30 text-amber-300 bg-amber-950/30">E-Commerce Sync</span>
+                <span class="badge-chip px-2.5 py-1 rounded border-amber-500/30 text-amber-300 bg-amber-950/30">DMS &amp; Secondary Sales</span>
+                <span class="badge-chip px-2.5 py-1 rounded border-amber-500/30 text-amber-300 bg-amber-950/30">UAT &amp; Audit Governance</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4">
+            <button onclick="openModal('discoveryModal')" class="w-full py-2.5 px-4 rounded-xl bg-amber-950/40 hover:bg-amber-900/40 border border-amber-700/40 text-amber-300 text-xs font-semibold flex items-center justify-center gap-2 transition-all">
+              <i data-lucide="file-check" class="w-4 h-4"></i>
+              <span>Schedule Blueprint / SDD Audit</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Functional Modules (Col 2 & 3) -->
+        <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+          
+          <div class="p-5 rounded-2xl bg-finova-card border border-finova-border hover:border-amber-500/40 transition-all">
+            <div class="w-9 h-9 rounded-lg bg-amber-950 flex items-center justify-center text-amber-400 mb-3">
+              <i data-lucide="clipboard-list" class="w-5 h-5"></i>
+            </div>
+            <h4 class="text-base font-bold text-white">Full Lifecycle Implementation Guidance</h4>
+            <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+              Turnkey delivery from initial process discovery and functional blueprints to master data cleansing, user training, and post-go-live hypercare across 10+ industry verticals.
+            </p>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-finova-card border border-finova-border hover:border-amber-500/40 transition-all">
+            <div class="w-9 h-9 rounded-lg bg-cyan-950 flex items-center justify-center text-cyan-400 mb-3">
+              <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+            </div>
+            <h4 class="text-base font-bold text-white">Multi-Channel E-Commerce Architecture</h4>
+            <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+              Standardized order, inventory, and returns synchronization across marketplace aggregators (EasyeCom, Amazon, D2C portals) with daily automatic inventory reconciliations.
+            </p>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-finova-card border border-finova-border hover:border-amber-500/40 transition-all">
+            <div class="w-9 h-9 rounded-lg bg-sky-950 flex items-center justify-center text-sky-400 mb-3">
+              <i data-lucide="truck" class="w-5 h-5"></i>
+            </div>
+            <h4 class="text-base font-bold text-white">DMS &amp; Secondary Sales Synchronization</h4>
+            <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+              Connecting core ERP ledgers with Distribution Management Systems (IBIS) and Field Sales CRMs for stockist order booking (POB) and daily activity monitoring.
+            </p>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-finova-card border border-finova-border hover:border-amber-500/40 transition-all">
+            <div class="w-9 h-9 rounded-lg bg-rose-950 flex items-center justify-center text-rose-400 mb-3">
+              <i data-lucide="check-check" class="w-5 h-5"></i>
+            </div>
+            <h4 class="text-base font-bold text-white">Data Cutover &amp; Audit Governance</h4>
+            <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+              High-precision DTW data staging for multi-currency Charts of Accounts, opening inventory, approval hierarchies, and transaction notification validation rules.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Tab Content 3: Unified Delivery Model (Hidden by default) -->
+      <div id="contentUnified" class="tab-pane hidden mt-14">
+        <div class="p-8 rounded-2xl bg-finova-card border border-finova-border max-w-4xl mx-auto">
+          <div class="text-center max-w-2xl mx-auto mb-8">
+            <span class="text-xs font-mono text-cyan-400 uppercase tracking-widest font-semibold">Turnkey Delivery Framework</span>
+            <h3 class="text-2xl font-bold text-white mt-2">Unified Synergy Between Technical &amp; Functional Teams</h3>
+            <p class="text-xs sm:text-sm text-slate-400 mt-2">
+              Most implementations encounter friction when developers don't understand balance sheets or functional consultants can't debug database concurrency. Finova One resolves this with unified execution.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs sm:text-sm">
+            <div class="p-4 rounded-xl bg-finova-bg border border-finova-border/60">
+              <div class="font-bold text-white flex items-center gap-2 mb-2">
+                <span class="w-6 h-6 rounded-full bg-cyan-950 text-cyan-400 flex items-center justify-center text-xs font-mono">1</span>
+                <span>Process Blueprint &amp; SDD</span>
+              </div>
+              <p class="text-slate-400 leading-relaxed">
+                Thorough business analysis mapping real-world operational workflows into detailed System Design Documents with clear accounting, inventory, and tax compliance criteria.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-finova-bg border border-finova-border/60">
+              <div class="font-bold text-white flex items-center gap-2 mb-2">
+                <span class="w-6 h-6 rounded-full bg-amber-950 text-amber-400 flex items-center justify-center text-xs font-mono">2</span>
+                <span>Optimized Engineering</span>
+              </div>
+              <p class="text-slate-400 leading-relaxed">
+                High-performance C# SDK and Service Layer development featuring decoupled asynchronous worker queues and memory optimization for smooth peak-load operations.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-finova-bg border border-finova-border/60">
+              <div class="font-bold text-white flex items-center gap-2 mb-2">
+                <span class="w-6 h-6 rounded-full bg-emerald-950 text-emerald-400 flex items-center justify-center text-xs font-mono">3</span>
+                <span>Cutover, UAT &amp; Hypercare</span>
+              </div>
+              <p class="text-slate-400 leading-relaxed">
+                Staged DTW migrations, rigorous end-to-end user acceptance testing, and dedicated hypercare to ensure flawless go-live execution.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Featured Architectures Deep-Dive -->
+  <section id="architectures" class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+      <div>
+        <span class="text-xs font-mono tracking-widest uppercase text-cyan-400 font-semibold">Production-Tested Systems</span>
+        <h2 class="text-3xl font-bold text-white tracking-tight mt-2">Enterprise Architectural Case Studies</h2>
+      </div>
+      <p class="text-xs sm:text-sm text-finova-slate max-w-md mt-2 md:mt-0">
+        Review technical breakdowns of mission-critical systems engineered to solve high-concurrency bottlenecks and complex business requirements.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+      <!-- Card 1: Async Message Queue (Flagship) -->
+      <div class="p-6 rounded-2xl bg-finova-card border border-finova-border hover:border-cyan-500/50 transition-all flex flex-col justify-between group">
+        <div>
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-cyan-950/80 border border-cyan-800/40 text-cyan-400">High Concurrency</span>
+            <span class="text-xs text-slate-500 font-mono">Case #01</span>
+          </div>
+          <h3 class="text-lg font-bold text-white mt-4 group-hover:text-cyan-300 transition-colors">
+            Async Message Queue &amp; Deadlock Elimination
+          </h3>
+          <p class="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed">
+            Decoupled incoming bulk REST API payloads using worker queues with exponential-backoff retries, preventing database transaction lockups during peak volume spikes.
+          </p>
+          <div class="mt-4 pt-4 border-t border-finova-border/40">
+            <div class="text-[11px] text-cyan-300 font-medium"><strong>Outcome:</strong> 100% elimination of API timeouts under heavy concurrent order imports.</div>
+          </div>
+        </div>
+        <button onclick="openModal('queueModal')" class="mt-6 w-full py-2.5 px-3 rounded-xl bg-finova-bg border border-finova-border hover:border-cyan-500/50 text-slate-200 text-xs font-semibold flex items-center justify-center gap-2 transition-all">
+          <i data-lucide="eye" class="w-3.5 h-3.5 text-cyan-400"></i>
+          <span>View Interactive Architecture</span>
+        </button>
+      </div>
+
+      <!-- Card 2: Decoupled Web Reporting Portal -->
+      <div class="p-6 rounded-2xl bg-finova-card border border-finova-border hover:border-sky-500/50 transition-all flex flex-col justify-between group">
+        <div>
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-sky-950/80 border border-sky-800/40 text-sky-400">Web App / MVC</span>
+            <span class="text-xs text-slate-500 font-mono">Case #02</span>
+          </div>
+          <h3 class="text-lg font-bold text-white mt-4 group-hover:text-sky-300 transition-colors">
+            Standalone .NET Core Financial Reporting Portal
+          </h3>
+          <p class="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed">
+            Engineered an offloaded web app allowing operational teams to query and export massive transactional datasets (General Ledger, Trial Balance, GSTR) without freezing active ERP workstations.
+          </p>
+          <div class="mt-4 pt-4 border-t border-finova-border/40">
+            <div class="text-[11px] text-sky-300 font-medium"><strong>Outcome:</strong> 70% faster month-end reporting; zero workstation crashes during heavy finance audits.</div>
+          </div>
+        </div>
+        <div class="mt-6 p-2.5 rounded-lg bg-finova-bg border border-finova-border/60 text-[11px] font-mono text-slate-400 flex items-center justify-between">
+          <span>Stack: .NET Core • SQL Optimization</span>
+          <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>
+        </div>
+      </div>
+
+      <!-- Card 3: P2P & Host-to-Host Banking -->
+      <div class="p-6 rounded-2xl bg-finova-card border border-finova-border hover:border-amber-500/50 transition-all flex flex-col justify-between group">
+        <div>
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-amber-950/80 border border-amber-800/40 text-amber-400">FinTech &amp; P2P</span>
+            <span class="text-xs text-slate-500 font-mono">Case #03</span>
+          </div>
+          <h3 class="text-lg font-bold text-white mt-4 group-hover:text-amber-300 transition-colors">
+            Host-to-Host (H2H) Bank Automation &amp; P2P
+          </h3>
+          <p class="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed">
+            Direct Host-to-Host integration between enterprise procurement platforms, banking payment gateways, and core ledgers with digital signature encryption and automated clearing entries.
+          </p>
+          <div class="mt-4 pt-4 border-t border-finova-border/40">
+            <div class="text-[11px] text-amber-300 font-medium"><strong>Outcome:</strong> Completely eliminated manual bank portal uploads and duplicate payment risks.</div>
+          </div>
+        </div>
+        <div class="mt-6 p-2.5 rounded-lg bg-finova-bg border border-finova-border/60 text-[11px] font-mono text-slate-400 flex items-center justify-between">
+          <span>Stack: REST API • Encryption • DI-API</span>
+          <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Interactive Architecture Modal (Async Queue Diagram) -->
+  <div id="queueModal" class="app-modal fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+    <div class="bg-finova-card border border-finova-border rounded-2xl max-w-4xl w-full p-6 sm:p-8 relative shadow-2xl">
+      
+      <button onclick="closeModal('queueModal')" class="absolute top-5 right-5 text-slate-400 hover:text-white p-2">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="flex items-center gap-2 text-cyan-400 font-mono text-xs uppercase mb-2">
+        <i data-lucide="cpu" class="w-4 h-4"></i>
+        <span>Technical Architecture Breakdown</span>
+      </div>
+      
+      <h3 class="text-xl sm:text-2xl font-bold text-white">
+        Async Message Queue &amp; Lock-Free Architecture
+      </h3>
+      
+      <p class="text-xs sm:text-sm text-slate-400 mt-2">
+        How we resolve concurrent external API requests attempting to update inventory or financial ledgers simultaneously.
+      </p>
+
+      <!-- Interactive Flow Graphic -->
+      <div class="mt-6 p-6 rounded-xl bg-finova-bg border border-finova-border/80 font-mono text-xs">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
+          
+          <div class="p-3.5 rounded-lg bg-finova-card border border-finova-border flex flex-col justify-center">
+            <span class="text-sky-400 font-semibold mb-1">1. External Ingestion</span>
+            <p class="text-[10px] text-slate-400">E-Com / DMS / Bank APIs push high-volume JSON payloads</p>
+          </div>
+
+          <div class="p-3.5 rounded-lg bg-cyan-950/40 border border-cyan-800/60 flex flex-col justify-center">
+            <span class="text-cyan-300 font-semibold mb-1">2. Worker Queue</span>
+            <p class="text-[10px] text-slate-400">Payload queued; immediate HTTP 202 response returned (0 sec lock)</p>
+          </div>
+
+          <div class="p-3.5 rounded-lg bg-amber-950/40 border border-amber-800/60 flex flex-col justify-center">
+            <span class="text-amber-300 font-semibold mb-1">3. Concurrency Throttle</span>
+            <p class="text-[10px] text-slate-400">Sequenced execution worker with exponential backoff on table lock</p>
+          </div>
+
+          <div class="p-3.5 rounded-lg bg-emerald-950/40 border border-emerald-800/60 flex flex-col justify-center">
+            <span class="text-emerald-300 font-semibold mb-1">4. Database Commit</span>
+            <p class="text-[10px] text-slate-400">Atomic commits (`Company.StartTransaction`) into In-Memory DB</p>
+          </div>
+
+        </div>
+
+        <div class="mt-6 p-4 rounded-lg bg-slate-900 border border-slate-800 text-[11px] leading-relaxed text-slate-300">
+          <span class="text-cyan-400 font-bold block mb-1">Why standard ERP APIs fail under load:</span>
+          When 50 concurrent webhooks hit the API or Service Layer simultaneously to update the same stock item or account ledger, database engines trigger table locks resulting in severe transaction deadlocks. By introducing an in-memory worker queue, transaction bursts are flattened into non-blocking sequential batches without dropping requests.
+        </div>
+      </div>
+
+      <div class="mt-6 flex justify-end">
+        <button onclick="closeModal('queueModal')" class="px-5 py-2 rounded-lg bg-finova-border text-xs font-semibold text-white hover:bg-slate-700 transition-all">
+          Close Architecture View
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Real Contact & Discovery Lead Capture Modal -->
+  <div id="discoveryModal" class="app-modal fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+    <div class="bg-finova-card border border-finova-border rounded-2xl max-w-lg w-full p-6 sm:p-8 relative shadow-2xl">
+      
+      <button onclick="closeModal('discoveryModal')" class="absolute top-5 right-5 text-slate-400 hover:text-white p-2">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="flex items-center gap-2 text-cyan-400 font-mono text-xs uppercase mb-2">
+        <i data-lucide="calendar" class="w-4 h-4"></i>
+        <span>Technical Scoping Session</span>
+      </div>
+      
+      <h3 class="text-xl sm:text-2xl font-bold text-white">
+        Schedule a Discovery Call
+      </h3>
+      
+      <p class="text-xs text-slate-400 mt-2">
+        Enter your details below. Our solutions engineering team will review your requirements and reach out to confirm a suitable video meeting slot.
+      </p>
+
+      <form id="discoveryForm" onsubmit="handleDiscoverySubmit(event)" class="space-y-4 mt-6">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Full Name *</label>
+          <input type="text" id="discName" required placeholder="John Doe" class="w-full px-4 py-2.5 rounded-lg bg-finova-bg border border-finova-border text-white text-xs sm:text-sm focus:outline-none focus:border-cyan-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Work Email *</label>
+          <input type="email" id="discEmail" required placeholder="john@enterprise.com" class="w-full px-4 py-2.5 rounded-lg bg-finova-bg border border-finova-border text-white text-xs sm:text-sm focus:outline-none focus:border-cyan-500">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Company / Organization</label>
+            <input type="text" id="discCompany" placeholder="Apex Solutions" class="w-full px-4 py-2.5 rounded-lg bg-finova-bg border border-finova-border text-white text-xs sm:text-sm focus:outline-none focus:border-cyan-500">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Preferred Timezone</label>
+            <select id="discTimezone" class="w-full px-4 py-2.5 rounded-lg bg-finova-bg border border-finova-border text-white text-xs sm:text-sm focus:outline-none focus:border-cyan-500 font-medium">
+              <option value="US (EST / PST)">US Timezones (EST / PST)</option>
+              <option value="UK / Europe (GMT / CET)">UK / Europe (GMT / CET)</option>
+              <option value="APAC / Australia (AEST)">APAC / Australia (AEST)</option>
+              <option value="India (IST)">India (IST)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Brief Technical Objective</label>
+          <textarea id="discNotes" rows="2" placeholder="e.g. Need to resolve API deadlocks on Service Layer during order ingestion..." class="w-full px-4 py-2 rounded-lg bg-finova-bg border border-finova-border text-white text-xs sm:text-sm focus:outline-none focus:border-cyan-500"></textarea>
+        </div>
+
+        <button type="submit" id="discBtn" class="w-full py-3 px-5 rounded-xl font-semibold text-xs sm:text-sm bg-gradient-to-r from-sky-600 via-cyan-600 to-teal-500 hover:from-sky-500 hover:to-teal-400 text-white shadow-lg shadow-cyan-950/60 transition-all flex items-center justify-center gap-2">
+          <i data-lucide="send" class="w-4 h-4"></i>
+          <span>Send Discovery Request</span>
+        </button>
+
+        <p class="text-[11px] text-center text-slate-500">
+          Enterprise-Grade Governance &amp; Confidentiality | Governed by standard mutual Non-Disclosure Agreements (NDAs).
+        </p>
+      </form>
+
+      <!-- Feedback Banner inside Modal -->
+      <div id="modalSuccessBanner" class="hidden mt-4 p-4 rounded-xl bg-emerald-950/60 border border-emerald-700/60 text-center">
+        <i data-lucide="check-circle" class="w-7 h-7 text-emerald-400 mx-auto mb-1"></i>
+        <h4 class="text-sm font-bold text-white">Discovery Request Received</h4>
+        <p class="text-xs text-slate-300 mt-1">
+          Thank you! Our engineering team will review your requirements and reach out within 4 business hours to coordinate the meeting.
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Industry Domain Matrix -->
+  <section id="industries" class="py-20 bg-finova-bg border-t border-finova-border/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-2xl mx-auto mb-14">
+        <span class="text-xs font-mono tracking-widest uppercase text-cyan-400 font-semibold">Field-Tested Competencies</span>
+        <h2 class="text-3xl font-bold text-white tracking-tight mt-2">Industry Domain Coverage</h2>
+        <p class="text-xs sm:text-sm text-slate-400 mt-2">
+          Specialized business logic, workflows, and regulatory compliance delivered across multiple enterprise sectors.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <div class="p-6 rounded-2xl bg-finova-card border border-finova-border">
+          <div class="flex items-center gap-3 text-cyan-400 mb-3">
+            <i data-lucide="car" class="w-5 h-5"></i>
+            <h4 class="text-base font-bold text-white">Auto Retail &amp; FinTech</h4>
+          </div>
+          <p class="text-xs text-slate-400 leading-relaxed mb-4">
+            Host-to-Host banking automations, high-volume P2P workflows, and standalone web reporting portals for multi-entity finance consolidation.
+          </p>
+          <div class="text-[11px] font-mono text-cyan-400">Automated Financial Sync</div>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-finova-card border border-finova-border">
+          <div class="flex items-center gap-3 text-sky-400 mb-3">
+            <i data-lucide="pill" class="w-5 h-5"></i>
+            <h4 class="text-base font-bold text-white">Pharmaceuticals &amp; Life Sciences</h4>
+          </div>
+          <p class="text-xs text-slate-400 leading-relaxed mb-4">
+            Batch-wise QC approvals, expiry alerts, distribution management systems (IBIS), and field representative call reporting (CRM).
+          </p>
+          <div class="text-[11px] font-mono text-sky-400">Strict Quality Compliance</div>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-finova-card border border-finova-border">
+          <div class="flex items-center gap-3 text-amber-400 mb-3">
+            <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+            <h4 class="text-base font-bold text-white">E-Commerce &amp; Retail FMCG</h4>
+          </div>
+          <p class="text-xs text-slate-400 leading-relaxed mb-4">
+            Centralized multi-channel sync (EasyeCom, Amazon, Flipkart) with daily inventory reconciliations and automated returns tracking.
+          </p>
+          <div class="text-[11px] font-mono text-amber-400">Multi-Channel Synchronization</div>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-finova-card border border-finova-border">
+          <div class="flex items-center gap-3 text-emerald-400 mb-3">
+            <i data-lucide="factory" class="w-5 h-5"></i>
+            <h4 class="text-base font-bold text-white">Discrete Manufacturing</h4>
+          </div>
+          <p class="text-xs text-slate-400 leading-relaxed mb-4">
+            Unified production issue/receipt forms, automated serial number allocation on delivery documents, and multi-level BOM costing.
+          </p>
+          <div class="text-[11px] font-mono text-emerald-400">Production Optimization</div>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-finova-card border border-finova-border">
+          <div class="flex items-center gap-3 text-purple-400 mb-3">
+            <i data-lucide="scissors" class="w-5 h-5"></i>
+            <h4 class="text-base font-bold text-white">Textile &amp; Process Houses</h4>
+          </div>
+          <p class="text-xs text-slate-400 leading-relaxed mb-4">
+            Subcontracted job-work tracking, grey vs. finished goods reconciliation, roll/meter length matrices, and fast DTW data cutovers.
+          </p>
+          <div class="text-[11px] font-mono text-purple-400">Job Work Tracking</div>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-finova-card border border-finova-border">
+          <div class="flex items-center gap-3 text-rose-400 mb-3">
+            <i data-lucide="box" class="w-5 h-5"></i>
+            <h4 class="text-base font-bold text-white">Polymers &amp; Packaging</h4>
+          </div>
+          <p class="text-xs text-slate-400 leading-relaxed mb-4">
+            Scrap factor modeling, weight tolerance gate entry validations, vehicle inward/outward tracking, and customer payment reminder utilities.
+          </p>
+          <div class="text-[11px] font-mono text-rose-400">Logistics &amp; Weight Validation</div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Engagement Models Section -->
+  <section id="models" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-2xl mx-auto mb-14">
+      <span class="text-xs font-mono tracking-widest uppercase text-cyan-400 font-semibold">Structured Delivery Models</span>
+      <h2 class="text-3xl font-bold text-white tracking-tight mt-2">Flexible Collaboration Models</h2>
+      <p class="text-xs sm:text-sm text-slate-400 mt-2">
+        Engineered specifically for implementation partners requiring sprint bandwidth and enterprise end-clients seeking specialized systems architecture.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+      <div class="p-6 rounded-2xl bg-finova-card border border-finova-border relative flex flex-col justify-between">
+        <div>
+          <div class="w-10 h-10 rounded-xl bg-cyan-950 flex items-center justify-center text-cyan-400 mb-4 font-mono font-bold text-sm">
+            01
+          </div>
+          <h3 class="text-lg font-bold text-white">Partner Overflow Delivery</h3>
+          <p class="text-xs text-cyan-300 font-mono mt-1">For Certified Implementation Partners</p>
+          <p class="text-xs sm:text-sm text-slate-400 mt-3 leading-relaxed">
+            Sprint-based subcontracting to absorb backlogged custom add-on features, Service Layer APIs, or complex database queries during critical delivery cycles.
+          </p>
+        </div>
+        <ul class="mt-6 pt-4 border-t border-finova-border/60 text-xs text-slate-300 space-y-2">
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-cyan-400"></i> Seamless white-label or co-consulting</li>
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-cyan-400"></i> Strict NDA &amp; IP assignment agreements</li>
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-cyan-400"></i> Sandbox test milestone before engagement</li>
+        </ul>
+      </div>
+
+      <div class="p-6 rounded-2xl bg-finova-card border border-finova-border border-cyan-500/30 relative flex flex-col justify-between glow-cyan">
+        <div class="absolute -top-3 right-6 px-2.5 py-0.5 rounded-full bg-cyan-500 text-[10px] font-bold uppercase tracking-wider text-slate-950">
+          Most Popular
+        </div>
+        <div>
+          <div class="w-10 h-10 rounded-xl bg-sky-950 flex items-center justify-center text-sky-400 mb-4 font-mono font-bold text-sm">
+            02
+          </div>
+          <h3 class="text-lg font-bold text-white">Fixed-Scope Milestones</h3>
+          <p class="text-xs text-sky-300 font-mono mt-1">For Targeted Projects</p>
+          <p class="text-xs sm:text-sm text-slate-400 mt-3 leading-relaxed">
+            Pre-scoped deliverables with clear boundaries (e.g., E-Commerce connector, banking H2H API, or DTW cutover sprint) with defined acceptance sign-offs.
+          </p>
+        </div>
+        <ul class="mt-6 pt-4 border-t border-finova-border/60 text-xs text-slate-300 space-y-2">
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-cyan-400"></i> 100% transparent milestone pricing</li>
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-cyan-400"></i> Defined delivery timelines</li>
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-cyan-400"></i> 30-day post-delivery bug warranty</li>
+        </ul>
+      </div>
+
+      <div class="p-6 rounded-2xl bg-finova-card border border-finova-border relative flex flex-col justify-between">
+        <div>
+          <div class="w-10 h-10 rounded-xl bg-amber-950 flex items-center justify-center text-amber-400 mb-4 font-mono font-bold text-sm">
+            03
+          </div>
+          <h3 class="text-lg font-bold text-white">Global Asynchronous Support</h3>
+          <p class="text-xs text-amber-300 font-mono mt-1">US • UK • Europe • Australia</p>
+          <p class="text-xs sm:text-sm text-slate-400 mt-3 leading-relaxed">
+            Off-hours turnaround ensures builds and performance fixes are committed while domestic operations are offline—ready for your morning tests.
+          </p>
+        </div>
+        <ul class="mt-6 pt-4 border-t border-finova-border/60 text-xs text-slate-300 space-y-2">
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-cyan-400"></i> Overlapping discovery windows</li>
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-cyan-400"></i> Daily asynchronous Loom/Git updates</li>
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-cyan-400"></i> Emergency cutover weekend coverage</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Interactive Project Milestone Estimator -->
+  <section id="estimator" class="py-24 bg-finova-card/60 border-t border-finova-border/70 relative">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center mb-10">
+        <span class="text-xs font-mono tracking-widest uppercase text-cyan-400 font-semibold">Instant Scoping Tool</span>
+        <h2 class="text-3xl font-bold text-white tracking-tight mt-2">Project Milestone &amp; Timeframe Estimator</h2>
+        <p class="text-xs sm:text-sm text-slate-400 mt-2">
+          Select your enterprise requirement below to generate an estimated scope and discuss implementation on a technical discovery call.
+        </p>
+      </div>
+
+      <!-- Estimator Box -->
+      <div class="p-6 sm:p-8 rounded-2xl bg-finova-bg border border-finova-border shadow-xl">
+        <div class="space-y-6">
+          
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+              Select Your Primary Workstream / Bottleneck:
+            </label>
+            <select id="projectType" onchange="updateEstimate()" class="w-full px-4 py-3 rounded-xl bg-finova-card border border-finova-border text-white text-xs sm:text-sm focus:outline-none focus:border-cyan-500 font-medium">
+              <option value="queue">API Concurrency Deadlock &amp; Queue Resolution (Service Layer)</option>
+              <option value="addon">Custom C# .NET SDK Add-on Feature Development</option>
+              <option value="ecom">E-Commerce Marketplace Sync (Orders, Inventory, Invoices)</option>
+              <option value="reporting">Decoupled Web Reporting Portal (.NET Core MVC)</option>
+              <option value="functional">Functional Blueprint (SDD) &amp; DTW Cutover Migration</option>
+              <option value="audit">Database Performance Audit &amp; Slow Query Tuning</option>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+                Database Platform:
+              </label>
+              <select id="dbPlatform" class="w-full px-4 py-3 rounded-xl bg-finova-card border border-finova-border text-white text-xs sm:text-sm focus:outline-none focus:border-cyan-500 font-medium">
+                <option value="hana">SAP HANA (In-Memory Database)</option>
+                <option value="sql">Microsoft SQL Server</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+                ERP Release / Deployment:
+              </label>
+              <select id="b1Version" class="w-full px-4 py-3 rounded-xl bg-finova-card border border-finova-border text-white text-xs sm:text-sm focus:outline-none focus:border-cyan-500 font-medium">
+                <option value="v10">Version 10.0 (Cloud / On-Prem)</option>
+                <option value="v9">Version 9.3 / 9.2</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Dynamic Output Estimate Card -->
+          <div class="p-4 sm:p-5 rounded-xl bg-finova-card/90 border border-cyan-800/40 text-xs sm:text-sm">
+            <div class="flex items-center justify-between border-b border-finova-border/60 pb-3 mb-3">
+              <span class="text-slate-300 font-medium">Recommended Milestone Sprint:</span>
+              <span id="estDuration" class="font-mono font-bold text-cyan-300 text-sm">3 - 5 Working Days</span>
+            </div>
+            <div class="flex items-center justify-between border-b border-finova-border/60 pb-3 mb-3">
+              <span class="text-slate-300 font-medium">Included Verification:</span>
+              <span id="estProof" class="font-mono text-emerald-400">4-Hour Sandbox Proof-of-Concept</span>
+            </div>
+            <p id="estNotes" class="text-slate-400 text-xs leading-relaxed">
+              Decouple API transactions using an asynchronous queue worker with atomic commits to completely eliminate database locking under bulk loads.
+            </p>
+          </div>
+
+          <!-- Consolidated Action Button -->
+          <div class="pt-2">
+            <button 
+              type="button" 
+              onclick="openModal('discoveryModal')" 
+              class="w-full py-3.5 px-6 rounded-xl font-semibold text-sm bg-gradient-to-r from-sky-600 via-cyan-600 to-teal-500 hover:from-sky-500 hover:to-teal-400 text-white shadow-lg shadow-cyan-950/60 transition-all hover:scale-[1.01] flex items-center justify-center gap-2"
+            >
+              <i data-lucide="calendar" class="w-4 h-4"></i>
+              <span>Discuss This Scope on a Discovery Call</span>
+            </button>
+          </div>
+
+          <p class="text-[11px] text-center text-slate-500">
+            Strict confidentiality guaranteed. We execute standard mutual NDAs prior to accessing client staging or sandbox environments.
+          </p>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Integrated About & Direct Contact Section -->
+  <section id="contact" class="py-24 bg-finova-bg border-t border-finova-border/80 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        
+        <!-- Left Column: About Us & Direct Contact Info -->
+        <div class="lg:col-span-5 space-y-6">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/30 bg-cyan-950/40 text-xs font-mono text-cyan-300">
+            <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+            About Finova One
+          </div>
+
+          <h2 class="text-3xl font-bold text-white tracking-tight">
+            Specialized Enterprise Systems &amp; Integration Studio
+          </h2>
+
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Finova One operates as an independent engineering practice designed to resolve high-friction enterprise software bottlenecks. We bridge the critical divide between deep core database concurrency and structured functional business processes.
+          </p>
+
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Whether partnering with certified global implementation practices to deliver off-hours sprint overflow or stabilizing high-volume transactional pipelines for mid-market clients, our delivery is focused entirely on measurable production stability and verifiable code quality.
+          </p>
+
+          <!-- Contact Details Block -->
+          <div class="pt-4 border-t border-finova-border/60 space-y-3.5 text-xs text-slate-300">
+            <div class="flex items-start gap-3">
+              <i data-lucide="map-pin" class="w-4 h-4 text-cyan-400 flex-shrink-0 mt-0.5"></i>
+              <span>Sector 92, Gurugram, Haryana, India — 122505</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <i data-lucide="phone" class="w-4 h-4 text-cyan-400 flex-shrink-0"></i>
+              <a href="tel:+917405299369" class="hover:text-cyan-300 transition-colors">+91 74052 99369</a>
+            </div>
+            <div class="flex items-center gap-3">
+              <i data-lucide="mail" class="w-4 h-4 text-cyan-400 flex-shrink-0"></i>
+              <a href="mailto:contact@finovaone.in" class="hover:text-cyan-300 transition-colors">contact@finovaone.in</a>
+            </div>
+            <div class="flex items-center gap-3">
+              <i data-lucide="clock" class="w-4 h-4 text-cyan-400 flex-shrink-0"></i>
+              <span>Async Turnaround: US (EST/PST) • UK (GMT) • APAC</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Simplified Contact Form -->
+        <div class="lg:col-span-7 p-6 sm:p-8 rounded-2xl bg-finova-card border border-finova-border shadow-xl">
+          <div class="flex items-center justify-between border-b border-finova-border/60 pb-4 mb-6">
+            <div>
+              <h3 class="text-lg font-bold text-white">Contact Us</h3>
+              <p class="text-xs text-slate-400 mt-0.5">Let's discuss your project or integration bottleneck.</p>
+            </div>
+            <span class="text-[11px] font-mono px-2.5 py-1 rounded bg-cyan-950/60 border border-cyan-800/40 text-cyan-300">
+              Avg. Response: &lt; 4 Hours
+            </span>
+          </div>
+
+          <form id="inlineContactForm" onsubmit="handleInlineSubmit(event)" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Your Name *</label>
+                <input type="text" id="inlineName" required placeholder="John Doe" class="w-full px-4 py-2.5 rounded-lg bg-finova-bg border border-finova-border text-white text-xs sm:text-sm focus:outline-none focus:border-cyan-500">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Work Email *</label>
+                <input type="email" id="inlineEmail" required placeholder="john@enterprise.com" class="w-full px-4 py-2.5 rounded-lg bg-finova-bg border border-finova-border text-white text-xs sm:text-sm focus:outline-none focus:border-cyan-500">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Company / Organization</label>
+                <input type="text" id="inlineCompany" placeholder="Apex Solutions" class="w-full px-4 py-2.5 rounded-lg bg-finova-bg border border-finova-border text-white text-xs sm:text-sm focus:outline-none focus:border-cyan-500">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Engagement Type</label>
+                <select id="inlineType" class="w-full px-4 py-2.5 rounded-lg bg-finova-bg border border-finova-border text-white text-xs sm:text-sm focus:outline-none focus:border-cyan-500">
+                  <option value="Partner Sprint Overflow">Partner Sprint Overflow</option>
+                  <option value="Fixed-Scope Milestone">Fixed-Scope Milestone</option>
+                  <option value="API Deadlock / Integration">API Deadlock &amp; Concurrency Issue</option>
+                  <option value="Functional / Cutover">Functional Blueprint &amp; Cutover</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Project Details / Message</label>
+              <textarea id="inlineNotes" rows="3" placeholder="Briefly describe what you're looking to build or solve..." class="w-full px-4 py-2 rounded-lg bg-finova-bg border border-finova-border text-white text-xs sm:text-sm focus:outline-none focus:border-cyan-500"></textarea>
+            </div>
+
+            <button type="submit" id="inlineSubmitBtn" class="w-full py-3.5 px-6 rounded-xl font-semibold text-xs sm:text-sm bg-gradient-to-r from-sky-600 via-cyan-600 to-teal-500 hover:from-sky-500 hover:to-teal-400 text-white shadow-lg shadow-cyan-950/60 transition-all flex items-center justify-center gap-2">
+              <i data-lucide="send" class="w-4 h-4"></i>
+              <span>Send Message</span>
+            </button>
+          </form>
+
+          <!-- Inline Success Banner -->
+          <div id="inlineSuccessBanner" class="hidden mt-4 p-4 rounded-xl bg-emerald-950/60 border border-emerald-700/60 text-center">
+            <i data-lucide="check-circle" class="w-7 h-7 text-emerald-400 mx-auto mb-1"></i>
+            <h4 class="text-sm font-bold text-white">Message Transmitted</h4>
+            <p class="text-xs text-slate-300 mt-1">
+              Thank you! Our engineering team will review your message and reach out within 4 business hours.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+  
+  <!-- Global Footer -->
+  <footer class="py-12 bg-finova-bg border-t border-finova-border text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      
+      <div class="flex items-center gap-2">
+        <span class="font-mono font-bold text-white text-sm">Finova One</span>
+        <span>•</span>
+        <span>Enterprise Systems &amp; Solutions</span>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-6 text-slate-400">
+        <a href="#practices" class="hover:text-cyan-400 transition-colors">Practices</a>
+        <a href="#architectures" class="hover:text-cyan-400 transition-colors">Architectures</a>
+        <a href="#models" class="hover:text-cyan-400 transition-colors">Engagement</a>
+        <a href="#estimator" class="hover:text-cyan-400 transition-colors">Estimator</a>
+        <a href="#contact" class="hover:text-cyan-400 transition-colors">Contact</a>
+      </div>
+
+      <div>
+        <span>&copy; <span id="yearSpan"></span> Finova One. All rights reserved.</span>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Vanilla JavaScript Logic -->
+  <script>
+    // Set dynamic current year in footer
+    document.getElementById('yearSpan').textContent = new Date().getFullYear();
+
+    // Lucide Icons initialization
+    lucide.createIcons();
+
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // Practice Switcher Tabs
+    const btnTabTech = document.getElementById('btnTabTech');
+    const btnTabFunc = document.getElementById('btnTabFunc');
+    const btnTabUnified = document.getElementById('btnTabUnified');
+
+    const contentTech = document.getElementById('contentTech');
+    const contentFunc = document.getElementById('contentFunc');
+    const contentUnified = document.getElementById('contentUnified');
+
+    const allTabs = [btnTabTech, btnTabFunc, btnTabUnified];
+    const allPanes = [contentTech, contentFunc, contentUnified];
+
+    function resetTabs() {
+      allTabs.forEach(btn => {
+        btn.className = 'tab-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-slate-400 hover:text-white';
+      });
+      allPanes.forEach(pane => pane.classList.add('hidden'));
+    }
+
+    btnTabTech.addEventListener('click', () => {
+      resetTabs();
+      btnTabTech.className = 'tab-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-cyan-600 text-white shadow-md shadow-cyan-900/40';
+      contentTech.classList.remove('hidden');
+      lucide.createIcons();
+    });
+
+    btnTabFunc.addEventListener('click', () => {
+      resetTabs();
+      btnTabFunc.className = 'tab-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-amber-600 text-white shadow-md shadow-amber-900/40';
+      contentFunc.classList.remove('hidden');
+      lucide.createIcons();
+    });
+
+    btnTabUnified.addEventListener('click', () => {
+      resetTabs();
+      btnTabUnified.className = 'tab-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-sky-700 text-white shadow-md shadow-sky-900/40';
+      contentUnified.classList.remove('hidden');
+      lucide.createIcons();
+    });
+
+    // Modal Control Functions
+    function openModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+
+    // Dynamic Milestone Estimator Data
+    const estimatesData = {
+      queue: {
+        duration: "3 - 5 Working Days",
+        proof: "4-Hour Sandbox Proof-of-Concept",
+        notes: "Decouple API transactions using an asynchronous queue worker with atomic commits to completely eliminate database locking under bulk loads."
+      },
+      addon: {
+        duration: "5 - 8 Working Days",
+        proof: "Isolated DLL / Form Event Prototype",
+        notes: "Full C# SDK development with UI-API event listeners, thread-safe background workers, and clean transaction rollbacks on validation errors."
+      },
+      ecom: {
+        duration: "7 - 12 Working Days",
+        proof: "End-to-End Test Order Sync Sandbox",
+        notes: "Bi-directional integration matching marketplace orders (EasyeCom/Amazon) with inventory allocation rules, invoices, and returns handling."
+      },
+      reporting: {
+        duration: "4 - 7 Working Days",
+        proof: "Standalone SQL View & Sample Web Grid",
+        notes: "Decoupled .NET Core MVC web portal for fast Trial Balance, GSTR, and GL extraction without bogging down the active ERP client UI."
+      },
+      functional: {
+        duration: "10 - 15 Working Days",
+        proof: "Phase 1 As-Is / To-Be Blueprint Review",
+        notes: "Comprehensive SDD documentation, Chart of Accounts review, DTW cutover template preparation, and user acceptance test cases."
+      },
+      audit: {
+        duration: "2 - 3 Working Days",
+        proof: "Execution Plan & Top-5 Slow Queries Analysis",
+        notes: "Deep HANA / SQL query analysis, missing index identification, and TransactionNotification audit to unblock laggy screens."
+      }
+    };
+
+    function updateEstimate() {
+      const select = document.getElementById('projectType');
+      const val = select.value;
+      const data = estimatesData[val];
+      
+      document.getElementById('estDuration').textContent = data.duration;
+      document.getElementById('estProof').textContent = data.proof;
+      document.getElementById('estNotes').textContent = data.notes;
+    }
+
+    // Web3Forms Access Key
+    const WEB3FORMS_ACCESS_KEY = "b2eefc69-eb4f-4098-aaf9-41c72708d41e";
+
+    // Reusable Web3Forms submission engine
+    async function sendToWeb3Forms(dataObject) {
+      if (!WEB3FORMS_ACCESS_KEY || WEB3FORMS_ACCESS_KEY === "YOUR_ACTUAL_ACCESS_KEY_HERE") {
+        console.warn("Finova One Form: Running in local simulation mode. Replace WEB3FORMS_ACCESS_KEY with your key.");
+        await new Promise(r => setTimeout(r, 600));
+        return { success: true, message: "Simulated submission" };
+      }
+
+      const payload = {
+        access_key: WEB3FORMS_ACCESS_KEY,
+        from_name: "Finova One Portal",
+        ...dataObject
+      };
+
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await response.json();
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "Submission failed");
+      }
+      return result;
+    }
+
+    // Direct Asynchronous Submission: Discovery Modal Form
+    async function handleDiscoverySubmit(e) {
+      e.preventDefault();
+      const submitBtn = document.getElementById('discBtn');
+      const originalText = submitBtn.innerHTML;
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<span class="animate-pulse">Transmitting Request...</span>`;
+
+      const payload = {
+        subject: `Discovery Call Request: ${document.getElementById("discCompany")?.value || 'New Prospect'}`,
+        fullName: document.getElementById("discName")?.value || "",
+        workEmail: document.getElementById("discEmail")?.value || "",
+        companyName: document.getElementById("discCompany")?.value || "",
+        preferredTimezone: document.getElementById("discTimezone")?.value || "",
+        projectContext: document.getElementById("discNotes")?.value || "",
+        submissionSource: "Discovery Modal"
+      };
+
+      try {
+        await sendToWeb3Forms(payload);
+        
+        // Show success confirmation banner
+        const banner = document.getElementById("modalSuccessBanner");
+        if (banner) banner.classList.remove("hidden");
+        document.getElementById("discoveryForm").reset();
+      } catch (err) {
+        console.error(err);
+        alert("Transmission error. Please email directly at contact@finovaone.in");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+        lucide.createIcons();
+      }
+    }
+
+    // Direct Asynchronous Submission: Inline Contact Desk Form
+    async function handleInlineSubmit(e) {
+      e.preventDefault();
+      const form = document.getElementById("inlineContactForm");
+      const btn = document.getElementById("inlineSubmitBtn");
+      const originalText = btn.innerHTML;
+
+      btn.disabled = true;
+      btn.innerHTML = `<span class="animate-pulse">Transmitting Inquiry...</span>`;
+
+      const payload = {
+        subject: `New Direct Inquiry: ${document.getElementById("inlineCompany").value || "Prospect"}`,
+        fullName: document.getElementById("inlineName").value,
+        workEmail: document.getElementById("inlineEmail").value,
+        companyName: document.getElementById("inlineCompany").value,
+        engagementType: document.getElementById("inlineType").value,
+        projectDetails: document.getElementById("inlineNotes").value,
+        submissionSource: "Inline Contact Desk"
+      };
+
+      try {
+        await sendToWeb3Forms(payload);
+        document.getElementById("inlineSuccessBanner").classList.remove("hidden");
+        form.reset();
+        lucide.createIcons();
+      } catch (err) {
+        console.error(err);
+        alert("Transmission failed. Please reach out directly to contact@finovaone.in");
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+        lucide.createIcons();
+      }
+    }
+  </script>
+</body>
+</html>
